@@ -6,13 +6,17 @@ module Seinfeld
   class Habit
     def initialize(attributes={})
       @attributes = attributes
-      @attributes['day_count'] ||= 1
+      @attributes['day_count'] ||= 0
     end
 
     attr_reader :attributes
 
-    def to_json(options={})
-      attributes.to_json
+    def as_json(options={})
+      attributes
+    end
+
+    def increment!
+      @attributes['day_count'] += 1
     end
 
     def method_missing(name, *args)
@@ -27,8 +31,10 @@ module Seinfeld
 
   class Application < Thor
 
-    def initialize(options={})
-      @file = options[:file] || '~/.seinfile'
+    def initialize(*args)
+      super
+
+      @file = File.join(ENV['HOME'], '.seinfile')
 
       if File.exists?(@file)
         data = JSON.parse(File.read(@file))
@@ -42,14 +48,15 @@ module Seinfeld
 
     desc "do", "Increment the day counter for the specified habit"
     def do(id)
-      @habits[id] = Habit.new(id: id)
+      @habits[id] ||= Habit.new(id: id)
+      @habits[id].increment!
       save!
     end
 
     no_tasks do
       def save!
         File.open(@file, 'w') do |file|
-          file.write(JSON.pretty_generate(habits))
+          file.write(JSON.pretty_generate(habits.inject({}) {|_, a| _.merge(a[0] => a[1].as_json)} ))
         end
       end
     end
