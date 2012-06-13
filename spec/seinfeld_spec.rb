@@ -7,9 +7,8 @@ describe Seinfeld::Application do
     File.dirname(__FILE__) + '/test-seinfile'
   end
 
-  before do
-    ENV['SEINFILE'] = test_seinfile_path
-  end
+  before { ENV['SEINFILE'] = test_seinfile_path }
+  after  { ENV['SEINFILE'] = nil }
 
   subject { Seinfeld::Application.new }
   describe "do" do
