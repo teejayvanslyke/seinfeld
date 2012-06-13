@@ -32,9 +32,9 @@ module Seinfeld
   class Application < Thor
 
     def initialize(*args)
-      super
+      super *args
 
-      @file = File.join(ENV['HOME'], '.seinfile')
+      @file = ENV['SEINFILE'] || File.join(ENV['HOME'], '.seinfile')
 
       if File.exists?(@file)
         data = JSON.parse(File.read(@file))

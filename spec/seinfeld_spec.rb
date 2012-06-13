@@ -7,7 +7,11 @@ describe Seinfeld::Application do
     File.dirname(__FILE__) + '/test-seinfile'
   end
 
-  subject { Seinfeld::Application.new(file: test_seinfile_path) }
+  before do
+    ENV['SEINFILE'] = test_seinfile_path
+  end
+
+  subject { Seinfeld::Application.new }
   describe "do" do
     before do
       subject.do 'yoga'
@@ -19,7 +23,12 @@ end
 
 describe Seinfeld::Habit do
   subject { Seinfeld::Habit.new(id: 'yoga') }
-  its(:day_count) { should equal(1) }
+  its(:day_count) { should == 0 }
+
+  describe "#increment!" do
+    before { subject.increment! }
+    its(:day_count) { should == 1 }
+  end
 end
 
 describe "persistence" do
@@ -29,7 +38,7 @@ describe "persistence" do
   end
 
   before do
-    @app = Seinfeld::Application.new(file: test_seinfile_path)
+    @app = Seinfeld::Application.new
     @app.do 'yoga'
   end
 
@@ -38,9 +47,7 @@ describe "persistence" do
   end
 
   it "should persist the data when reinstantiating with the same file" do
-    new_app = Seinfeld::Application.new(
-      file: test_seinfile_path
-    )
+    new_app = Seinfeld::Application.new
 
     new_app.habits['yoga'].id.should == "yoga"
   end
