@@ -1,22 +1,60 @@
 require 'thor'
 require 'json'
+require 'date'
 
 module Seinfeld
 
-  class Habit
+  class Entry
     def initialize(attributes={})
       @attributes = attributes
-      @attributes['day_count'] ||= 0
+      @attributes['date'] ||= Date.today
     end
 
     attr_reader :attributes
 
-    def as_json(options={})
+    def as_json
       attributes
     end
 
+    def method_missing(name, *args)
+      if attributes[name.to_s]
+        return attributes[name.to_s]
+      else
+        super
+      end
+    end
+  end
+
+  class Habit
+    def initialize(attributes={})
+      @attributes = attributes
+      if @attributes['entries']
+        @entries = @attributes['entries'].map {|attrs| Entry.new(attrs)}
+      else
+        @entries = []
+      end
+    end
+
+    attr_reader :attributes, :entries
+
+    def as_json(options={})
+      attributes.merge(
+        'entries' => entries.map(&:as_json)
+      )
+    end
+
+    def has_entry_for_date?(date)
+      @entries.any? {|e| e.date == date.to_s }
+    end
+
     def increment!
-      @attributes['day_count'] += 1
+      unless has_entry_for_date?(Date.today)
+        @entries << Entry.new
+      end
+    end
+
+    def day_count
+      @entries.length
     end
 
     def method_missing(name, *args)
@@ -51,7 +89,16 @@ module Seinfeld
       @habits[id] ||= Habit.new(id: id)
       @habits[id].increment!
       save!
+      puts "[#{id}] #{@habits[id].day_count} consecutive day(s)."
     end
+
+    desc "list", "List all habits and their current day counts"
+    def list
+      @habits.each do |id, habit|
+        puts "[#{id}] #{habit.day_count} consecutive day(s)."
+      end
+    end
+
 
     no_tasks do
       def save!

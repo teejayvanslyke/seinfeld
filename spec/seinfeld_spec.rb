@@ -21,12 +21,26 @@ describe Seinfeld::Application do
 end
 
 describe Seinfeld::Habit do
-  subject { Seinfeld::Habit.new(id: 'yoga') }
+  before { @habit = Seinfeld::Habit.new(id: 'yoga') }
+  subject { @habit }
   its(:day_count) { should == 0 }
 
   describe "#increment!" do
-    before { subject.increment! }
+    before { @habit.increment! }
+    subject { @habit }
     its(:day_count) { should == 1 }
+    its(:entries) { should have(1).item }
+    describe "first entry" do
+      subject { @habit.entries.first }
+      its(:date) { should == Date.today }
+    end
+
+    describe "adding two entries for the same day" do
+      before { @habit.increment! }
+      subject { @habit }
+      its(:day_count) { should == 1 }
+      its(:entries) { should have(1).item }
+    end
   end
 end
 
