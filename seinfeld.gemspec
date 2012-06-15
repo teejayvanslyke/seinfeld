@@ -5,12 +5,12 @@
 
 Gem::Specification.new do |s|
   s.name = "seinfeld"
-  s.version = ""
+  s.version = "0.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["T.J. VanSlyke"]
   s.date = "2012-06-15"
-  s.description = "TODO: longer description of your gem"
+  s.description = "A command line utility for tracking daily habits"
   s.email = "teejay.vanslyke@gmail.com"
   s.executables = ["seinfeld"]
   s.extra_rdoc_files = [
@@ -25,8 +25,10 @@ Gem::Specification.new do |s|
     "LICENSE.txt",
     "README.markdown",
     "Rakefile",
+    "VERSION",
     "bin/seinfeld",
     "lib/seinfeld.rb",
+    "seinfeld.gemspec",
     "spec/seinfeld_spec.rb",
     "spec/spec_helper.rb"
   ]
@@ -34,7 +36,7 @@ Gem::Specification.new do |s|
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = "1.8.10"
-  s.summary = "TODO: one-line summary of your gem"
+  s.summary = "Command line habit management"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
