@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "seinfeld"
   gem.homepage = "http://github.com/teejayvanslyke/seinfeld"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Command line habit management}
+  gem.description = %Q{A command line utility for tracking daily habits}
   gem.email = "teejay.vanslyke@gmail.com"
   gem.authors = ["T.J. VanSlyke"]
   # dependencies defined in Gemfile
