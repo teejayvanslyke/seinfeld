@@ -44,7 +44,7 @@ module Seinfeld
     end
 
     def has_entry_for_date?(date)
-      @entries.any? {|e| e.date == date.to_s }
+      @entries.any? {|e| e.date.to_s == date.to_s }
     end
 
     def increment!
