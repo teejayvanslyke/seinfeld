@@ -11,4 +11,11 @@ Installation
 Usage
 -----
 
+    $ seinfeld do yoga
+    [yoga] 3 consecutive day(s).
+
+    $ seinfeld list
+    [yoga] 3 consecutive days(s).
+    [writing] 24 consecutive day(s).
+
 
