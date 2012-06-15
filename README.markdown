@@ -18,4 +18,8 @@ Usage
     [yoga] 3 consecutive days(s).
     [writing] 24 consecutive day(s).
 
+Notes
+-----
+
+Your data is stored in ~/.seinfile as prettified JSON.
 
